@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Registro de Usuario</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     :root {
       --worldcup-blue: #0066b3;

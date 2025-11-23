@@ -36,6 +36,7 @@ if ($stmt = $conn->prepare($sql)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Mundial 2026</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="inicio_style.css">
@@ -61,7 +62,31 @@ if ($stmt = $conn->prepare($sql)) {
                             <div class="chat-item" onclick="cargarMensajes(<?php echo $chat['fk_chat']; ?>)">
                                 <img src="<?php echo htmlspecialchars($imagen); ?>" alt="Usuario">
                                 <div class="chat-info">
-                                    <div class="chat-name"><?php echo htmlspecialchars($chat['nombre_mostrar']); ?></div> 
+                                <?php 
+                                    $Medalla_Temp = $chat['Rango_Recompensa'];
+                                    $Medalla_Imprimir;
+                                    switch($Medalla_Temp){
+                                        case 0:
+                                            $Medalla_Imprimir = '';
+                                            break;
+                                        case 1:
+                                            $Medalla_Imprimir = '<i class = "Recompensa_Bronze"></i>';
+                                            break;
+                                        case 2:
+                                            $Medalla_Imprimir = '<i class = "Recompensa_Silver"></i>';
+                                            break;
+                                        case 3:
+                                            $Medalla_Imprimir = '<i class = "Recompensa_Gold"></i>';
+                                            break;
+                                        default:
+                                            $Medalla_Imprimir = '';
+                                        break;
+                                    }
+                                
+                                ?>
+                                
+                                
+                                    <div class="chat-name"><?php echo htmlspecialchars($chat['nombre_mostrar']) . $Medalla_Imprimir;?></div> 
                                     <div class="chat-preview"><?php echo htmlspecialchars($chat['ultimo_mensaje']); ?></div>
                                 </div>
                                 <div class="chat-time"><?php echo $hora; ?></div>
@@ -109,7 +134,7 @@ if ($stmt = $conn->prepare($sql)) {
                 <div class="chat-header-info">
                     <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Leo" alt="Usuario">
                     <div>
-                        <h2>Chat Activo</h2>
+                        <h2>Chat Activo </h2> 
                         <p>En línea</p>
                     </div>
                 </div>

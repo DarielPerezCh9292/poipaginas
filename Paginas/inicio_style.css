@@ -28,6 +28,39 @@
             color: #a0a0a0;
         }
 
+        .Recompensa_Gold{
+            background-image: url(imgs/medalla_GOLD.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .Recompensa_Silver{
+            background-image: url(imgs/medalla_Silver.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .Recompensa_Bronze{
+            background-image: url(imgs/medalla_Silver.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
         #Mensaje_Pendiente{
             width: 20px;
             height: 20px;
