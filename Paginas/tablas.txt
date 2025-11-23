@@ -1,0 +1,96 @@
+CREATE TABLE `usuarios` (
+  `ID_usuario` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(255) DEFAULT NULL,
+  `correo` VARCHAR(255) DEFAULT NULL,
+  `contrasena` VARCHAR(255) DEFAULT NULL,
+  `imagen_perfil` VARCHAR(255) DEFAULT NULL,
+  `fecha_nacimiento` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`ID_usuario`)
+) 
+
+CREATE chat (
+	ID_chat int PRIMARY KEY AUTO_INCREMENT,
+    nombre varchar(255),
+    fecha_creacion datetime,
+    tipo int
+
+)
+
+
+create table mensaje (
+
+	ID_mensaje INT AUTO_INCREMENT PRIMARY KEY,
+    mensaje  varchar(255),
+    fecha_creacion datetime,
+    fk_usuario int,
+    fk_chat int,
+    
+    CONSTRAINT fk_usuario FOREIGN KEY (fk_usuario)
+    REFERENCES usuarios(ID_usuario),
+    
+     CONSTRAINT fk_chat FOREIGN KEY (fk_chat)
+    REFERENCES chat(ID_chat)
+
+)
+
+
+//////////////////////////////////////////////////////////
+
+//////////////////////PROCEDURES//////////////////////////
+
+//////////////////////////////////////////////////////////
+
+
+DELIMITER //
+
+CREATE PROCEDURE ObtenerListaChats(
+    IN p_id_usuario_actual INT
+)
+BEGIN
+    SELECT
+        M_Ultimo.fk_chat,
+        M_Ultimo.mensaje AS ultimo_mensaje,
+        M_Ultimo.fecha_creacion AS fecha_ultimo_mensaje,
+        U_Destinatario.nombre AS nombre_destinatario,
+        U_Destinatario.imagen_perfil AS imagen_destinatario
+    FROM 
+        mensaje M_Ultimo
+    -- PASO 1: Identificar al Interlocutor (el otro usuario en el chat)
+    JOIN 
+        (
+            -- Subconsulta para encontrar el ID del 'otro' usuario en el chat
+            SELECT DISTINCT 
+                fk_chat,
+                fk_usuario AS id_interlocutor
+            FROM 
+                mensaje
+            WHERE 
+                fk_usuario != p_id_usuario_actual -- Excluye al usuario actual
+            GROUP BY 
+                fk_chat, fk_usuario
+            HAVING 
+                COUNT(DISTINCT fk_usuario) <= 2 -- Asume chats de 1-a-1
+        ) AS T_Interlocutor 
+    ON 
+        T_Interlocutor.fk_chat = M_Ultimo.fk_chat
+    -- PASO 2: Obtener la información del Destinatario (el Interlocutor)
+    JOIN 
+        usuarios U_Destinatario 
+    ON 
+        U_Destinatario.ID_usuario = T_Interlocutor.id_interlocutor
+    WHERE 
+        -- PASO 3: Filtrar para que M_Ultimo sea SOLAMENTE el mensaje más reciente del chat
+        M_Ultimo.fecha_creacion = (
+            SELECT MAX(fecha_creacion)
+            FROM mensaje
+            WHERE fk_chat = M_Ultimo.fk_chat
+        )
+        -- Y asegurar que el usuario actual haya participado en ese chat
+        AND M_Ultimo.fk_chat IN (
+            SELECT DISTINCT fk_chat FROM mensaje WHERE fk_usuario = p_id_usuario_actual
+        )
+    ORDER BY 
+        M_Ultimo.fecha_creacion DESC;
+END //
+
+DELIMITER ;

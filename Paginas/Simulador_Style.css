@@ -1,0 +1,32 @@
+:root {
+    --worldcup-blue: #0066b3;
+    --worldcup-green: #00cc66;
+    --worldcup-red: #ff3366;
+    --worldcup-white: #f0f0f0;
+    --worldcup-black: #121212;
+    --worldcup-dark-gray: #1e1e1e;
+    --worldcup-gray: #2d2d2d;
+    --worldcup-light-blue: #3399ff;
+    --worldcup-text: #e0e0e0;
+    --worldcup-text-secondary: #a0a0a0;
+}
+
+.Fondo {
+    
+    background-color: #121212;
+    
+}
+
+.container{
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+.Red_text{
+    color: #ff3366;
+}
+
+.Button_blue{
+    background-color: #0066b3;
+    color: #e0e0e0;
+}
